@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostalgia di Casa</title>
+    <style>
+        /* RESET E STILI GENERALI */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="black"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(50,50,50,0.5)" stroke-width="1"/></svg>');
+        }
+        
+        /* ANIMAZIONE SFONDO CON GIF (placeholder) */
+        .background-gif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: url('https://i.gifer.com/XXM2.gif') center center repeat;
+            pointer-events: none;
+        }
+        
+        /* HEADER */
+        header {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-bottom: 2px solid #ff00ff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+            margin-bottom: 1rem;
+            animation: flicker 3s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                opacity: 0.7;
+            }
+        }
+        
+        /* NAVIGAZIONE */
+        nav {
+            margin-top: 1rem;
+        }
+        
+        nav a {
+            color: #00ffff;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem;
+            border: 1px solid #00ffff;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            background: #00ffff;
+            color: #000;
+            text-shadow: 0 0 5px #000;
+        }
+        
+        /* CONTENITORE PRINCIPALE */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* SEZIONE TESTUALE */
+        .text-section {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #ffff00;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .text-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.gifer.com/7VE.gif') center center repeat;
+            opacity: 0.05;
+            z-index: -1;
+        }
+        
+        .text-section h2 {
+            color: #ffff00;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .text-section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        /* GALLERIA IMMAGINI */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #ff00ff;
+            height: 250px;
+            background: #000;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #ff00ff;
+            z-index: 2;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.1);
+        }
+        
+        /* MODAL PER IMMAGINE INGRANDITA */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border: 3px solid #ff00ff;
+            box-shadow: 0 0 30px #ff00ff;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-top: 2px solid #00ffff;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        footer p {
+            margin-bottom: 1rem;
+        }
+        
+        .social-links a {
+            color: #ffff00;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+        
+        /* EFFETTI SPECIALI */
+        .floating {
+            animation: floating 5s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .blink {
+            animation: blink 2s steps(2, start) infinite;
+        }
+        
+        @keyframes blink {
+            to { visibility: hidden; }
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            nav a {
+                display: block;
+                margin: 0.5rem auto;
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sfondo con GIF -->
+    <div class="background-gif"></div>
+    
+    <!-- Header -->
+    <header>
+        <h1>NOSTALGIA DI CASA</h1>
+        <p>Un viaggio nei ricordi della mia infanzia</p>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#gallery">Galleria</a>
+            <a href="#about">Ricordi</a>
+        </nav>
+    </header>
+    
+    <!-- Contenitore principale -->
+    <div class="container">
+        <!-- Sezione testo in inglese -->
+        <section id="about" class="text-section">
+            <h2>Memories of Home</h2>
+            <p>Home is not just a place, it's a feeling. It's the warmth that wraps around you like a familiar blanket, the scent of childhood meals cooking in the kitchen, the sound of laughter echoing through hallways that remember every step you've ever taken.</p>
+            <p>Nostalgia is a curious emotion - it can simultaneously bring joy for what was and sadness for what can never be again. These memories of my hometown live within me like old photographs, fading at the edges but forever preserving the essence of moments that shaped who I am.</p>
+            <p>I remember the way the sunlight filtered through the trees in the backyard, casting dancing shadows on the grass where I would lie for hours, dreaming of futures I couldn't yet imagine. The sound of the ice cream truck's melody winding through neighborhood streets, prompting frantic searches for loose change.</p>
+            <p>Time moves forward relentlessly, but in my mind, I can always return to those streets, those rooms, those moments. The child I was still exists there, forever playing in golden afternoon light, forever home.</p>
+        </section>
+        
+        <!-- Galleria immagini -->
+        <section id="gallery">
+            <h2 style="color: #ff00ff; text-align: center; margin-bottom: 1rem;">I Miei Ricordi</h2>
+            <div class="gallery">
+                <!-- Queste sono immagini placeholder - sostituiscile con le tue -->
+                <div class="gallery-item">
+                    <img src="https://placehold.co/600x400/000000/FFFFFF/png?text=La+Mia+Infanzia+1" alt="Ricordo d'infanzia" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/600x400/000000/FFFFFF/png?text=La+Mia+Infanzia+2" alt="Ricordo d'infanzia" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/600x400/000000/FFFFFF/png?text=La+Mia+Infanzia+3" alt="Ricordo d'infanzia" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/600x400/000000/FFFFFF/png?text=Il+Mio+Paese+1" alt="Il mio paese" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/600x400/000000/FFFFFF/png?text=Il+Mio+Paese+2" alt="Il mio paese" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/600x400/000000/FFFFFF/png?text=Il+Mio+Paese+3" alt="Il mio paese" class="gallery-img">
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Modal per visualizzare le immagini ingrandite -->
+    <div class="modal" id="imageModal">
+        <span class="close-modal" id="closeModal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>© 2023 Nostalgia di Casa - Tutti i ricordi conservati</p>
+        <div class="social-links">
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="#">Twitter</a>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript per il modal delle immagini
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModal = document.getElementById('closeModal');
+            
+            // Apre il modal con l'immagine cliccata
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    modalImage.src = imgSrc;
+                    modal.style.display = 'flex';
+                });
+            });
+            
+            // Chiude il modal
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Chiude il modal cliccando fuori dall'immagine
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Effetti interattivi aggiuntivi
+            const headings = document.querySelectorAll('h1, h2');
+            headings.forEach(heading => {
+                heading.addEventListener('mouseover', function() {
+                    this.style.textShadow = '0 0 20px #ff00ff, 0 0 30px #ff00ff';
+                });
+                
+                heading.addEventListener('mouseout', function() {
+                    this.style.textShadow = '0 0 10px #ff00ff, 0 0 20px #ff00ff';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
